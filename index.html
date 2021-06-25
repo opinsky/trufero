@@ -1,0 +1,56 @@
+<html>
+<script src="particles.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RYKBCS89M1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RYKBCS89M1');
+</script>
+
+<figure class="item">
+
+<img
+  id="logo"
+  class="next-particle"
+  data-noise="100"
+  data-init-position="left"
+  data-init-direction="left"
+  data-fade-position="left"
+  data-fade-direction="left"
+
+  src="trufero.png"
+></img>
+</figure>
+
+<script type="text/javascript"> 
+  var xp = new NextParticle({
+    image: document.all.logo,
+    width: window.innerWidth,
+    height: window.innerHeight,
+});
+
+window.onresize = function() {
+    xp.width = window.innerWidth;
+    xp.height = window.innerHeight;
+    xp.start();
+}
+</script>
+
+<style>
+.next-particle {
+  visibility: hidden;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 55%;
+}
+
+</style>
+
+</html>
+
+
