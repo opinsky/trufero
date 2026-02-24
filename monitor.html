@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trufero Monitor | Institutional-Grade Illiquid Asset Intelligence</title>
+    <style>
+        :root {
+            /* Brand Colors from Logo */
+            --brand-blue: #4872B7;
+            --brand-orange: #C96535;
+            
+            /* Sophisticated Palette Extensions */
+            --blue-dark: #1E2A3B;
+            --blue-deep: #111827;
+            --blue-light: #EBF0F6;
+            --orange-hover: #b0562c;
+            
+            /* Typography & Neutrals */
+            --text-main: #334155;
+            --text-muted: #64748B;
+            --bg-light: #F8FAFC;
+            --bg-white: #FFFFFF;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            color: var(--text-main);
+            line-height: 1.7;
+            background-color: var(--bg-white);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Reusable Components --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section-padding {
+            padding: 6rem 0;
+        }
+
+        .text-center { text-align: center; }
+        
+        h1, h2, h3, h4 {
+            color: var(--blue-deep);
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(72, 114, 183, 0.1);
+            color: var(--brand-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(72, 114, 183, 0.2);
+        }
+
+        .badge span { color: var(--brand-orange); margin-left: 5px; }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-orange);
+            color: var(--bg-white);
+            box-shadow: 0 4px 14px rgba(201, 101, 53, 0.4);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 101, 53, 0.5);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--blue-deep);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+            background-color: var(--blue-light);
+        }
+
+        /* --- Navigation --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo img { height: 45px; }
+
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--brand-orange); }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 10rem 0 6rem 0;
+            background: radial-gradient(circle at top right, var(--blue-light), var(--bg-white) 70%);
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-content p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .hero-actions { display: flex; gap: 1rem; }
+
+        /* Mock SaaS Dashboard UI via CSS */
+        .mock-dashboard {
+            background: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: transform 0.5s ease;
+        }
+
+        .mock-dashboard:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+
+        .mock-header {
+            background: var(--bg-light);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #CBD5E1; }
+        .dot:nth-child(1) { background: #F87171; }
+        .dot:nth-child(2) { background: #FBBF24; }
+        .dot:nth-child(3) { background: #34D399; }
+
+        .mock-body { padding: 20px; display: grid; gap: 15px; }
+        
+        .mock-widget {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .mock-chart {
+            height: 100px;
+            background: linear-gradient(180deg, rgba(72,114,183,0.2) 0%, rgba(255,255,255,0) 100%);
+            border-bottom: 2px solid var(--brand-blue);
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        .mock-bar {
+            position: absolute;
+            bottom: 0;
+            width: 15%;
+            background: var(--brand-orange);
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* --- Stats Strip --- */
+        .stats-strip {
+            background-color: var(--blue-deep);
+            color: var(--bg-white);
+            padding: 4rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            color: var(--bg-white);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: var(--brand-orange);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* --- Problem/Solution --- */
+        .dark-section {
+            background-color: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            max-width: 700px;
+            margin: 0 auto 4rem auto;
+        }
+
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        
+        .engine-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .engine-card {
+            background: var(--bg-white);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .engine-card h4 {
+            color: var(--brand-orange);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Tri-Level Deep Dive --- */
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
+
+        .feature-row:nth-child(even) .feature-text { order: 2; }
+        .feature-row:nth-child(even) .feature-visual { order: 1; }
+
+        .feature-text h3 {
+            font-size: 2rem;
+            color: var(--brand-blue);
+            margin-bottom: 1rem;
+        }
+
+        .feature-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .metric-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .metric-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: var(--blue-dark);
+        }
+
+        .metric-list li::before {
+            content: "→";
+            color: var(--brand-orange);
+            font-weight: bold;
+        }
+
+        .visual-box {
+            background: var(--blue-light);
+            border-radius: 12px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--brand-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- Security & Compliance --- */
+        .security {
+            background-color: var(--blue-dark);
+            color: var(--bg-white);
+        }
+
+        .security h2 { color: var(--bg-white); }
+        .security p { color: #94A3B8; }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .sec-item {
+            border-top: 3px solid var(--brand-blue);
+            padding-top: 1.5rem;
+        }
+        
+        .sec-item h4 { color: var(--brand-orange); margin-bottom: 0.5rem; }
+
+        /* --- Testimonials --- */
+        .testimonials { background: var(--bg-white); }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .test-card {
+            background: var(--bg-light);
+            padding: 3rem 2rem;
+            border-radius: 8px;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .quote-mark {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--brand-blue);
+            opacity: 0.1;
+            font-family: serif;
+            line-height: 1;
+        }
+
+        .test-text {
+            font-size: 1.05rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .test-author h5 { font-size: 1.1rem; color: var(--blue-deep); }
+        .test-author p { font-size: 0.85rem; color: var(--brand-orange); font-weight: 600; text-transform: uppercase;}
+
+        /* --- CTA Section --- */
+        .cta-section {
+            background: linear-gradient(135deg, var(--brand-blue) 0%, var(--blue-dark) 100%);
+            color: var(--bg-white);
+            text-align: center;
+            padding: 6rem 5%;
+        }
+
+        .cta-section h2 { color: var(--bg-white); font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .cta-section p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--blue-deep);
+            color: #94A3B8;
+            padding: 4rem 5% 2rem 5%;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-logo img { height: 40px; filter: grayscale(100%) brightness(200%); margin-bottom: 1rem; }
+        
+        .footer-links h5 { color: var(--bg-white); margin-bottom: 1.5rem; font-size: 1rem; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { color: #94A3B8; text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--brand-orange); }
+
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 1024px) {
+            .hero-grid, .feature-row, .test-grid { grid-template-columns: 1fr; }
+            .feature-row:nth-child(even) .feature-text { order: 1; }
+            .feature-row:nth-child(even) .feature-visual { order: 2; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .engine-grid, .security-grid, .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .hero { padding-top: 8rem; }
+            .nav-links { display: none; } /* Simplified mobile nav */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="trufero.png" alt="Trufero Monitor">
+            </div>
+            <nav class="nav-links">
+                <a href="#platform">The Platform</a>
+                <a href="#analytics">Tri-Level Analytics</a>
+                <a href="#security">Security</a>
+                <a href="#testimonials">Clients</a>
+                <a href="#demo" class="btn btn-primary" style="padding: 0.6rem 1.2rem;">Request Access</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="badge">
+                    Institutional Trust <span>&gt; $400M AUM Monitored</span>
+                </div>
+                <h1>Bring Liquidity to Your Illiquid Data.</h1>
+                <p>Trufero Monitor is the advanced intelligence layer for Family Offices, Endowments, and Institutional Investors. We autonomously extract, structure, and analyze complex PDF reports from Venture Capital and Private Equity funds.</p>
+                <div class="hero-actions">
+                    <a href="#demo" class="btn btn-primary">Schedule a Platform Tour</a>
+                    <a href="#analytics" class="btn btn-secondary">Explore Capabilities</a>
+                </div>
+            </div>
+            
+            <div class="mock-dashboard">
+                <div class="mock-header">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                </div>
+                <div class="mock-body">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold;">Consolidated Portfolio IRR</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--blue-deep);">24.8%</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold;">Total Value (TVPI)</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--brand-orange);">2.4x</div>
+                        </div>
+                    </div>
+                    <div class="mock-widget">
+                        <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Capital Deployment Pacing</div>
+                        <div class="mock-chart">
+                            <div class="mock-bar" style="left: 5%; height: 30%;"></div>
+                            <div class="mock-bar" style="left: 25%; height: 50%;"></div>
+                            <div class="mock-bar" style="left: 45%; height: 40%;"></div>
+                            <div class="mock-bar" style="left: 65%; height: 80%;"></div>
+                            <div class="mock-bar" style="left: 85%; height: 60%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-strip">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <h3>$400M+</h3>
+                <p>Assets Monitored</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Automated Extraction</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>GPs Tracked</p>
+            </div>
+            <div class="stat-item">
+                <h3>3-Tier</h3>
+                <p>Look-Through Tech</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="platform" class="section-padding dark-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>The Illiquid Asset Reporting Bottleneck is Over.</h2>
+                <p style="font-size: 1.1rem;">General Partners report in wildly different formats, burying critical performance data inside unstructured PDFs, capital call notices, and K-1s. Trufero changes the paradigm.</p>
+            </div>
+
+            <div class="engine-grid">
+                <div class="engine-card">
+                    <h4>1. Intelligent Ingestion</h4>
+                    <p>Simply forward GP emails or drop PDFs into Trufero. Our document-AI engine natively understands unstructured financial layouts, extracting specific line items without manual data entry templates.</p>
+                </div>
+                <div class="engine-card">
+                    <h4>2. Automated Standardization</h4>
+                    <p>We normalize distinct reporting methodologies into a single, cohesive taxonomy. A capital account statement from Sequoia is seamlessly mapped alongside a quarterly update from KKR.</p>
+                </div>
+                <div class="engine-card">
+                    <h4>3. Real-Time Reconciliation</h4>
+                    <p>The system automatically reconciles called capital against commitments, tracks unfunded liabilities, and flags discrepancies in GP reported fees and carry calculations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="analytics" class="section-padding">
+        <div class="container">
+            <div class="section-header text-center" style="margin-bottom: 5rem;">
+                <h2>Tri-Level Analytical Visibility</h2>
+                <p style="font-size: 1.1rem;">Stop looking at illiquid investments as black boxes. Trufero Monitor breaks down your alternative allocation into three manageable, interactive tiers of intelligence.</p>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-text">
+                    <div class="badge">Tier 1</div>
+                    <h3>Macro Portfolio Level</h3>
+                    <p>Achieve a unified view of your entire alternative investment allocation. Manage pacing, liquidity requirements, and aggregate performance in real-time without wrestling with Excel roll-ups.</p>
+                    <ul class="metric-list">
+                        <li>Consolidated TVPI, DPI, RVPI</li>
+                        <li>Aggregate J-Curve Analysis</li>
+                        <li>Commitment vs. Called Capital</li>
+                        <li>Cash Flow Forecasting</li>
+                        <li>Asset Class Benchmarking</li>
+                        <li>Cross-Fund Exposure Limits</li>
+                    </ul>
+                </div>
+                <div class="feature-visual visual-box">
+                    <h2 style="color: var(--brand-blue); opacity: 0.5;">Portfolio Visualization Engine</h2>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="feature-visual visual-box" style="background: var(--bg-white);">
+                     <h2 style="color: var(--brand-orange); opacity: 0.5;">Fund Performance Matrix</h2>
+                </div>
+                <div class="feature-text">
+                    <div class="badge">Tier 2</div>
+                    <h3>Investment (Fund) Level</h3>
+                    <p>Drill down into the mechanics of specific Venture Capital and Private Equity vehicles. Assess General Partner performance, verify fee structures, and monitor the health of specific vintages.</p>
+                    <ul class="metric-list">
+                        <li>Gross vs. Net IRR Tracking</li>
+                        <li>Distribution Waterfalls</li>
+                        <li>GP Fee & Carry Verification</li>
+                        <li>Vintage Year Comparisons</li>
+                        <li>Capital Call Tracking</li>
+                        <li>Fund-Level MOIC</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-row" style="margin-bottom: 0;">
+                <div class="feature-text">
+                    <div class="badge">Tier 3</div>
+                    <h3>Invested Company Level</h3>
+                    <p>Attain the holy grail of LP investing: True Look-Through Analysis. Discover exactly which underlying startups and businesses are driving the returns within your fund investments.</p>
+                    <ul class="metric-list">
+                        <li>Underlying Asset Valuations</li>
+                        <li>Sector & Geo Concentration</li>
+                        <li>Follow-on Funding Tracking</li>
+                        <li>Cap Table Implied Ownership</li>
+                        <li>Revenue & Growth Metrics</li>
+                        <li>Cross-Fund Company Overlap</li>
+                    </ul>
+                </div>
+                <div class="feature-visual visual-box" style="background: var(--blue-deep);">
+                     <h2 style="color: var(--bg-white); opacity: 0.5;">Look-Through Asset Map</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="security" class="section-padding security">
+        <div class="container">
+            <div class="section-header text-center" style="margin-bottom: 2rem;">
+                <h2>Bank-Grade Security Architecture</h2>
+                <p>Protecting over $400M in highly sensitive, illiquid asset data requires an uncompromising approach to infrastructure and compliance.</p>
+            </div>
+            
+            <div class="security-grid">
+                <div class="sec-item">
+                    <h4>End-to-End Encryption</h4>
+                    <p>Data is encrypted at rest using AES-256 and in transit via TLS 1.3. Your financial documents are secured behind enterprise-grade firewalls.</p>
+                </div>
+                <div class="sec-item">
+                    <h4>SOC 2 Type II Compliant</h4>
+                    <p>Our platform undergoes rigorous, independent third-party audits to ensure strict adherence to industry standards for security, availability, and processing integrity.</p>
+                </div>
+                <div class="sec-item">
+                    <h4>Granular Access Controls</h4>
+                    <p>Implement Role-Based Access Control (RBAC), SSO, and Mandatory MFA to ensure only authorized personnel within your organization can view specific portfolio tiers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="section-padding testimonials">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Trusted by Sophisticated Allocators</h2>
+            </div>
+            
+            <div class="test-grid">
+                <div class="test-card">
+                    <div class="quote-mark">"</div>
+                    <p class="test-text">Trufero Monitor transformed our quarterly reporting cycle from a 3-week manual data entry nightmare into a 2-day review process. The ability to instantly see our consolidated DPI across 20+ VC funds is invaluable.</p>
+                    <div class="test-author">
+                        <h5>Elena Rostova</h5>
+                        <p>Chief Investment Officer, Multi-Family Office</p>
+                    </div>
+                </div>
+                
+                <div class="test-card">
+                    <div class="quote-mark">"</div>
+                    <p class="test-text">The 'Look-Through' company level analytics changed our investment strategy. We discovered massive overlapping sector exposure hidden deep within three different Private Equity vehicles that we couldn't see via standard GP reports.</p>
+                    <div class="test-author">
+                        <h5>Jameson Clark</h5>
+                        <p>Director of Alternatives, Apex Endowments</p>
+                    </div>
+                </div>
+
+                <div class="test-card">
+                    <div class="quote-mark">"</div>
+                    <p class="test-text">With over $400M in AUM spread across illiquid assets, tracking capital calls and reconciling GP fees was critical. Trufero’s automated extraction is flawless. It is the core operating system of our alternative portfolio.</p>
+                    <div class="test-author">
+                        <h5>Sarah Jenkins</h5>
+                        <p>Managing Partner, Horizon Wealth Partners</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="cta-section">
+        <div class="container">
+            <h2>Ready to Modernize Your Private Market Portfolio?</h2>
+            <p>Join the institutions managing over $400M in assets who have abandoned spreadsheets for automated, tri-level intelligence.</p>
+            <a href="#" class="btn btn-primary" style="font-size: 1.1rem; padding: 1.2rem 2.5rem;">Request a Personalized Demo</a>
+            <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.7; margin-bottom: 0;">No credit card required. White-glove onboarding included.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-logo">
+                    <img src="trufero.png" alt="Trufero Logo">
+                </div>
+                <p style="max-width: 300px; margin-bottom: 1rem;">Advanced illiquid asset tracking and intelligence for Venture Capital and Private Equity investors.</p>
+                <p style="font-weight: bold; color: var(--bg-white);">Over $400M Monitored AUM</p>
+            </div>
+            <div class="footer-links">
+                <h5>Platform</h5>
+                <ul>
+                    <li><a href="#analytics">Portfolio Analytics</a></li>
+                    <li><a href="#analytics">Fund Tracking</a></li>
+                    <li><a href="#analytics">Company Look-Through</a></li>
+                    <li><a href="#security">Security & Compliance</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h5>Company</h5>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Sales</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Trufero Monitor. All rights reserved.</p>
+            <p>Institutional Grade Intelligence.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
