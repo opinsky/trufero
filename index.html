@@ -1,46 +1,85 @@
+<!DOCTYPE html>
 <html>
-<script src="particles.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Trufero Monitor</title>
+    <style>
+        /* Basic reset to ensure the canvas fills the screen cleanly */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
 
-<figure class="item">
+        .next-particle {
+            visibility: hidden;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 55%;
+        }
 
-<img
-  id="logo"
-  class="next-particle"
-  data-noise="100"
-  data-init-position="left"
-  data-init-direction="left"
-  data-fade-position="left"
-  data-fade-direction="left"
+        /* --- New Access Button Styles --- */
+        .access-btn {
+            position: absolute;
+            bottom: 15%; /* Positions the button near the bottom of the screen */
+            left: 50%;
+            transform: translateX(-50%); /* Centers the button perfectly */
+            z-index: 100; /* Ensures it sits above the particle canvas */
+            
+            background-color: #C96535; /* Trufero Orange */
+            color: #FFFFFF;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(201, 101, 53, 0.4);
+            transition: all 0.3s ease;
+        }
 
-  src="trufero.png"
-></img>
-</figure>
+        .access-btn:hover {
+            background-color: #4872B7; /* Trufero Blue on hover */
+            box-shadow: 0 6px 20px rgba(72, 114, 183, 0.5);
+            transform: translateX(-50%) translateY(-3px); /* Slight lift effect */
+        }
+    </style>
+</head>
+<body>
 
-<script type="text/javascript"> 
-  var xp = new NextParticle({
-    image: document.all.logo,
-    width: window.innerWidth,
-    height: window.innerHeight,
-});
+    <script src="particles.js"></script>
 
-window.onresize = function() {
-    xp.width = window.innerWidth;
-    xp.height = window.innerHeight;
-    xp.start();
-}
-</script>
+    <a href="#" class="access-btn">Access Trufero Monitor</a>
 
-<style>
-.next-particle {
-  visibility: hidden;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 55%;
-}
+    <figure class="item" style="margin: 0;">
+        <img
+          id="logo"
+          class="next-particle"
+          data-noise="100"
+          data-init-position="left"
+          data-init-direction="left"
+          data-fade-position="left"
+          data-fade-direction="left"
+          src="trufero.png"
+        >
+    </figure>
 
-</style>
+    <script type="text/javascript"> 
+        var xp = new NextParticle({
+            image: document.all.logo,
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
 
+        window.onresize = function() {
+            xp.width = window.innerWidth;
+            xp.height = window.innerHeight;
+            xp.start();
+        }
+    </script>
+
+</body>
 </html>
-
-
