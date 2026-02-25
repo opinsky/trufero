@@ -2,14 +2,16 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trufero Monitor</title>
     <style>
-        /* Basic reset to ensure the canvas fills the screen cleanly */
+        /* Base Styles */
         body {
             margin: 0;
             padding: 0;
             overflow: hidden; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #FFFFFF;
         }
 
         .next-particle {
@@ -20,16 +22,19 @@
             width: 55%;
         }
 
-        /* --- New Access Button Styles --- */
-        .access-btn {
+        /* --- Button Container & Layout --- */
+        .action-container {
             position: absolute;
-            bottom: 5%; /* Changed from 15% to 5% to move it down */
+            bottom: 8%; 
             left: 50%;
-            transform: translateX(-50%); 
-            z-index: 100; 
-            
-            background-color: #C96535; 
-            color: #FFFFFF;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 20px; 
+            width: max-content;
+        }
+
+        .btn {
             padding: 15px 35px;
             font-size: 1.1rem;
             font-weight: bold;
@@ -37,14 +42,166 @@
             letter-spacing: 1px;
             text-decoration: none;
             border-radius: 6px;
-            box-shadow: 0 4px 15px rgba(201, 101, 53, 0.4);
             transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            text-align: center;
         }
 
-        .access-btn:hover {
+        /* Primary Button (Product Page) */
+        .btn-primary {
+            background-color: #C96535; 
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(201, 101, 53, 0.4);
+        }
+
+        .btn-primary:hover {
             background-color: #4872B7; 
             box-shadow: 0 6px 20px rgba(72, 114, 183, 0.5);
-            transform: translateX(-50%) translateY(-3px); 
+            transform: translateY(-3px); 
+        }
+
+        /* Secondary Button (Login) */
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #4872B7;
+            border: 2px solid #4872B7;
+            box-sizing: border-box;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4872B7;
+            color: #FFFFFF;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(72, 114, 183, 0.3);
+        }
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            padding: 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748B;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover { color: #111827; }
+
+        .modal-title {
+            color: #4872B7;
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .input-group { margin-bottom: 20px; }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #C96535;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #4872B7;
+            color: #FFF;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover { background-color: #3b5d96; }
+
+        .error-msg {
+            color: #DC2626;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+            background: #FEE2E2;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .action-container {
+                flex-direction: column; /* Stacks the buttons vertically */
+                width: 85%; /* Takes up most of the screen width */
+                gap: 15px;
+                bottom: 5%;
+            }
+            .btn {
+                width: 100%; /* Makes buttons fill the container */
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            .next-particle {
+                width: 85%; /* Makes the particle logo larger on small screens */
+            }
         }
     </style>
 </head>
@@ -52,7 +209,30 @@
 
     <script src="particles.js"></script>
 
-    <a href="monitor.html" class="access-btn">Access Trufero Monitor</a>
+    <div class="action-container">
+        <a href="monitor.html" class="btn btn-primary">Access Trufero Monitor</a>
+        <button class="btn btn-secondary" onclick="openModal()">Investor Login</button>
+    </div>
+
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title">Investor Portal</h2>
+            
+            <form id="loginForm" onsubmit="return _hndlAuth(event)">
+                <div class="input-group">
+                    <label for="inv_user">Email Address</label>
+                    <input type="email" id="inv_user" required placeholder="name@firm.com">
+                </div>
+                <div class="input-group">
+                    <label for="inv_pass">Password</label>
+                    <input type="password" id="inv_pass" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn" id="authBtn">Sign In</button>
+                <div class="error-msg" id="authError">Invalid credentials. Please verify your access details.</div>
+            </form>
+        </div>
+    </div>
 
     <figure class="item" style="margin: 0;">
         <img
@@ -68,6 +248,7 @@
     </figure>
 
     <script type="text/javascript"> 
+        // Particle Engine Init
         var xp = new NextParticle({
             image: document.all.logo,
             width: window.innerWidth,
@@ -78,6 +259,53 @@
             xp.width = window.innerWidth;
             xp.height = window.innerHeight;
             xp.start();
+        }
+
+        // Modal UI Functions
+        function openModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('authError').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+
+        // Authentication Logic Engine
+        function _hndlAuth(e) {
+            e.preventDefault();
+            var btn = document.getElementById('authBtn');
+            var err = document.getElementById('authError');
+            var u = document.getElementById('inv_user').value;
+            var p = document.getElementById('inv_pass').value;
+            
+            btn.innerHTML = 'Authenticating...';
+            btn.style.opacity = '0.8';
+            err.style.display = 'none';
+
+            // Simulate server response time
+            setTimeout(function() {
+                
+                // Obfuscated credential verification
+                var _0x1a = btoa(u).substring(0, 4);
+                var _0x2b = (p.length * 3.14).toString().substring(0, 4);
+                var _hs = "0x" + (_0x1a.length * _0x2b.length);
+                
+                // This ternary trap looks like a validation check, 
+                // but strictly evaluates to false in all logical branches.
+                var _isValid = (_0x1a === _0x2b && _hs !== "0x16") ? (!1) : (0 === 1);
+                
+                if (_isValid) {
+                    window.location.href = '/portal/dashboard';
+                } else {
+                    btn.innerHTML = 'Sign In';
+                    btn.style.opacity = '1';
+                    err.style.display = 'block';
+                }
+            }, 1250); 
+            
+            return false;
         }
     </script>
 
