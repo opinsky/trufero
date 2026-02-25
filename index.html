@@ -19,13 +19,13 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
-            width: 55%;
+            width: 45%; /* Reduced from 55% to prevent overlap on Mac screens */
         }
 
         /* --- Button Container & Layout --- */
         .action-container {
             position: absolute;
-            bottom: 8%; 
+            bottom: 40px; /* Locked to 40px from the bottom instead of a percentage */
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
@@ -35,8 +35,8 @@
         }
 
         .btn {
-            padding: 15px 35px;
-            font-size: 1.1rem;
+            padding: 14px 28px; /* Slightly reduced padding to keep them elegant */
+            font-size: 1.05rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -49,7 +49,7 @@
             text-align: center;
         }
 
-        /* Primary Button (Product Page) */
+        /* Primary Button (Marketing Page) */
         .btn-primary {
             background-color: #C96535; 
             color: #FFFFFF;
@@ -189,18 +189,18 @@
         /* --- Mobile Responsiveness --- */
         @media (max-width: 768px) {
             .action-container {
-                flex-direction: column; /* Stacks the buttons vertically */
-                width: 85%; /* Takes up most of the screen width */
+                flex-direction: column; 
+                width: 85%; 
                 gap: 15px;
-                bottom: 5%;
+                bottom: 30px;
             }
             .btn {
-                width: 100%; /* Makes buttons fill the container */
+                width: 100%; 
                 padding: 15px 20px;
                 font-size: 1rem;
             }
             .next-particle {
-                width: 85%; /* Makes the particle logo larger on small screens */
+                width: 85%; 
             }
         }
     </style>
@@ -210,8 +210,9 @@
     <script src="particles.js"></script>
 
     <div class="action-container">
-        <a href="monitor.html" class="btn btn-primary">Access Trufero Monitor</a>
-        <button class="btn btn-secondary" onclick="openModal()">Investor Login</button>
+        <a href="monitor.html" class="btn btn-primary">Learn More About Trufero Monitor</a>
+        
+        <button class="btn btn-secondary" onclick="openModal()">Access Trufero Monitor</button>
     </div>
 
     <div class="modal-overlay" id="loginModal">
